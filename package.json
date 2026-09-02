@@ -1,0 +1,28 @@
+{
+  "name": "@frankenstein/portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A polygloth Micro-Frontend Portfolio Monorepo",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "npm run start --workspace=@frankenstein/host-shell",
+    "build": "npm run build --workspace=@frankenstein/host-shell",
+    "test": "npm run test --workspace=@frankenstein/host-shell"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FredAntB/Portfolio.git"
+  },
+  "keywords": [],
+  "author": "Frederick Antonio Balderrama Mendoza <antoniobalderramamendoza@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FredAntB/Portfolio/issues"
+  },
+  "homepage": "https://github.com/FredAntB/Portfolio#readme",
+  "allowScripts": {
+    "puppeteer@25.9.0": true
+  }
+}
