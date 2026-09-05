@@ -17,6 +17,10 @@ export const config: Config = {
           src: 'assets',
           dest: 'assets',
         },
+        {
+          src: 'assets/icon',
+          dest: 'assets/icon',
+        },
       ],
     },
   ],

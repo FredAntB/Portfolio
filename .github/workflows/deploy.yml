@@ -1,0 +1,46 @@
+name: Deploy Portfolio to GitHub Pages Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.github-pages-deployment.outputs.page_url }}
+    steps:
+      - name: Clone repo and checkout main branch
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22.9.0
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: packages/host-shell/www/
+
+      - name: Deploy to Github Pages
+        uses: actions/deploy-pages@v4
+        id: github-pages-deployment
