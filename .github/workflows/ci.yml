@@ -1,4 +1,4 @@
-name: Deploy Portfolio to GitHub Pages Workflow
+name: Build Portfolio on GitHub for Testing Purposes
 
 on:
   push:
@@ -6,21 +6,13 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  deployment:
+  build-check:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.github-pages-deployment.outputs.page_url }}
     steps:
       - name: Clone repo and checkout main branch
         uses: actions/checkout@v7
@@ -35,12 +27,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Upload artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: packages/host-shell/www/
-
-      - name: Deploy to Github Pages
-        uses: actions/deploy-pages@v4
-        id: github-pages-deployment
