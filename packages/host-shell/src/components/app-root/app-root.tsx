@@ -1,7 +1,6 @@
 import { Component, h } from '@stencil/core';
-import { createRouter, Route, match } from "stencil-router-v2";
-
-const Router = createRouter()
+import { Route, match } from "stencil-router-v2";
+import { Router } from "../../index";
 
 @Component({
   tag: 'app-root',
@@ -13,14 +12,14 @@ export class AppRoot {
     return (
       <div>
         <header>
-            <h1 onClick={() => Router.push("/")}>
+            <h1 onClick={() => Router.push("/portfolio/")}>
               Stencil App Starter
             </h1>
         </header>
 
         <main>
           <Router.Switch>
-            <Route path="/">
+            <Route path="/portfolio/">
               <app-home />
             </Route>
             <Route
