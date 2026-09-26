@@ -1,7 +1,7 @@
 {
   "name": "Stencil Starter",
   "short_name": "Stencil",
-  "start_url": "/Portfolio/",
+  "start_url": "/portfolio/",
   "display": "standalone",
   "icons": [{
     "src": "assets/icon/icon.png",
