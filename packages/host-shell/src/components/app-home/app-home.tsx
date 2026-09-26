@@ -1,5 +1,5 @@
 import { Component, h } from '@stencil/core';
-import { Router } from "../../";
+import { Router } from "../../index";
 
 @Component({
   tag: 'app-home',
@@ -15,7 +15,7 @@ export class AppHome {
           <a href="https://stenciljs.com">stenciljs.com</a> to get started.
         </p>
         <button
-          onClick={() => Router.push('/profile/stencil')}
+          onClick={() => Router.push('/portfolio/profile/stencil')}
         >
           Profile Page
         </button>
