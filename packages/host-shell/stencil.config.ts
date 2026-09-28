@@ -23,7 +23,7 @@ export const config: Config = {
         },
         {
           src: 'coi-serviceworker.js',
-          dest: 'coi-serviceworker.js',
+          dest: '.',
         },
       ],
     },
