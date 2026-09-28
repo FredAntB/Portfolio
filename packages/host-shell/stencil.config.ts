@@ -21,6 +21,10 @@ export const config: Config = {
           src: 'assets/icon',
           dest: 'assets/icon',
         },
+        {
+          src: 'coi-serviceworker.js',
+          dest: 'coi-serviceworker.js',
+        },
       ],
     },
   ],
