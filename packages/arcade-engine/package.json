@@ -1,0 +1,13 @@
+{
+  "name": "@frankenstein/arcade-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "mkdir -p dist && emcmake cmake -B build && cmake --build build",
+    "build:docker": "docker build -t arcade-engine . && docker cp $(docker create arcade-engine):/usr/local/app/dist ./dist && docker rm $(docker ps -a -q --filter ancestor=arcade-engine --format=\"{{.ID}}\")",
+  },
+  "keywords": [],
+  "type": "commonjs"
+}
