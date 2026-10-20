@@ -1,39 +1,55 @@
+module SokobanEngine where
+
 type Position = (Int, Int)
 
-data Direction = U | D | L | R
+data Direction = U | D | L | R deriving (Eq, Show)
 
-data GameState = GameState
+data SokobanState = SokobanState
   { walls :: [Position],
     boxes :: [Position],
+    targets :: [Position],
     playerPosition :: Position
   }
+  deriving (Eq, Show)
 
-isInRange :: Int -> Int -> Bool
-isInRange x y = x >= 0 && x < y
+directionOffset :: Direction -> Position
+directionOffset U = (0, -1)
+directionOffset D = (0, 1)
+directionOffset L = (-1, 0)
+directionOffset R = (1, 0)
 
-isWallInPosition :: Position -> [Position] -> Bool
-isWallInPosition p walls = p `elem` walls
+addPos :: Position -> Position -> Position
+addPos (x1, y1) (dx, dy) = (x1 + dx, y1 + dy)
 
-isBoxInPosition :: Position -> [Position] -> Bool
-isBoxInPosition p boxes = p `elem` boxes
+removeOne :: (Eq a) => a -> [a] -> [a]
+removeOne _ [] = []
+removeOne x (y : ys)
+  | x == y = ys
+  | otherwise = y : removeOne x ys
 
 moveBox :: Position -> Position -> [Position] -> [Position]
-moveBox oldPos newPos boxes = newPos : filter (/= oldPos) boxes
+moveBox oldPos newPos b = newPos : removeOne oldPos b
 
-movePlayer :: GameState -> Direction -> GameState
-movePlayer g@GameState {playerPosition = p@(x, y), boxes = b, walls = w} U
-  | isWallInPosition (x, (y - 1)) w = g
-  | isBoxInPosition (x, (y - 1)) b && not (isWallInPosition (x, (y - 2)) w) = g {playerPosition = (x, (y - 1)), boxes = moveBox (x, (y - 1)) (x, (y - 2)) b}
-  | otherwise = g {playerPosition = (x, (y - 1))}
-movePlayer g@GameState {playerPosition = p@(x, y), boxes = b, walls = w} D
-  | isWallInPosition (x, (y + 1)) w = g
-  | isBoxInPosition (x, (y + 1)) b && not (isWallInPosition (x, (y + 2)) w) = g {playerPosition = (x, (y + 1)), boxes = moveBox (x, (y + 1)) (x, (y + 2)) b}
-  | otherwise = g {playerPosition = (x, (y + 1))}
-movePlayer g@GameState {playerPosition = p@(x, y), boxes = b, walls = w} L
-  | isWallInPosition ((x - 1), y) w = g
-  | isBoxInPosition ((x - 1), y) b && not (isWallInPosition ((x - 2), y) w) = g {playerPosition = ((x - 1), y), boxes = moveBox ((x - 1), y) ((x - 2), y) b}
-  | otherwise = g {playerPosition = ((x - 1), y)}
-movePlayer g@GameState {playerPosition = p@(x, y), boxes = b, walls = w} R
-  | isWallInPosition ((x + 1), y) w = g
-  | isBoxInPosition ((x + 1), y) b && not (isWallInPosition ((x + 2), y) w) = g {playerPosition = ((x + 1), y), boxes = moveBox ((x + 1), y) ((x + 2), y) b}
-  | otherwise = g {playerPosition = ((x + 1), y)}
+movePlayer :: SokobanState -> Direction -> SokobanState
+movePlayer state dir =
+  let offset = directionOffset dir
+      nextP = playerPosition state `addPos` offset
+      nextNextP = nextP `addPos` offset
+      w = walls state
+      b = boxes state
+
+      isWall p = p `elem` w
+      isBox p = p `elem` b
+   in if isWall nextP
+        then state
+        else
+          if isBox nextP
+            then
+              if not (isWall nextNextP) && not (isBox nextNextP)
+                then state {playerPosition = nextP, boxes = moveBox nextP nextNextP b}
+                else state
+            else state {playerPosition = nextP}
+
+isWin :: SokobanState -> Bool
+isWin SokobanState {boxes = b, targets = t} =
+  length b == length t && all (`elem` t) b
