@@ -1,0 +1,10 @@
+cradle:
+  direct:
+    arguments:
+      - "-ihaskell"
+      - "-ihaskell/games"
+      - "haskell/Main.hs"
+      - "haskell/GameState.hs"
+      - "haskell/FFI.hs"
+      - "haskell/games/SokobanEngine.hs"
+      - "haskell/games/JigsawEngine.hs"
